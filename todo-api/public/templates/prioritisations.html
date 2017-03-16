@@ -1,0 +1,23 @@
+<table class="prioritisations">
+  <thead>
+    <tr>
+      <td class="priority">Priority</td>
+      <td class="theme">Theme</td>
+      <td class="id-header">Id</td>
+      <td class="status">Status</td>
+      <td class="description">Epic Title</td>
+      <td><td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="prioritisation in prioritisations | orderBy:'-priority' | filter:category">
+      <td class="center">{{prioritisation.priority}}</td>
+      <td>{{prioritisation.theme}}</td>
+      <td class="center id" ng-class="prioritisation['product-route']">{{prioritisation.id}}</td>
+      <td class="center">{{prioritisation.status}}</td>
+      <td><a href="#/{{prioritisation._id}}">{{prioritisation['epic-title']}}</a></td>
+      <td><button ng-show="!editing[$index]" ng-click="remove(prioritisation)">remove</button></td>
+    </tr>
+  </tbody>
+</table>
+<div class="new-task" ng-show="showNewTask">New task <input type="text" ng-model="newPrioritisation"><button ng-click="save()">Create</button></div>

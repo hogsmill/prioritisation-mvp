@@ -1,0 +1,109 @@
+
+$food: #44cc00;
+$menswear-and-kidswear: #888;
+$womenswear-and-home: skyblue;
+$international: purple;
+$checkout-and-payments: navy;
+$mobile: #ff8080;
+$anchor: navy;
+
+body {
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  input, textarea {
+    font-size: 14px;
+    width: 98%;
+  }
+  textarea { height: 125px; }
+}
+
+a {
+  color: $anchor; /* #00B7FF; */
+  font-weight: bold;
+  text-decoration: none;
+  &:hover { text-decoration: underline; }
+}
+
+h1 { text-align: center; }
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  thead {
+    td { font-weight: bold; text-align: center; }
+  }
+  td {
+    border-bottom: 1px solid #ddd;
+    vertical-align: top;
+    padding: 2px 4px;
+  }
+}
+
+.right { text-align: right; }
+.center { text-align: center; }
+.inline { display: inline-block; padding: 4px; }
+.empty { font-style: italic; color: #aaa; }
+
+.nav li.overall div { color: #000; }
+.food { background-color: $food; color: #fff; }
+.menswear-and-kidswear { background-color: $menswear-and-kidswear; color: #fff; }
+.womenswear-and-home { background-color: $womenswear-and-home; color: #fff; }
+.international { background-color: $international; color: #fff; }
+.checkout-and-payments { background-color: $checkout-and-payments; color: #fff; }
+.mobile { background-color: $mobile; color: #fff; }
+
+.nav {
+  color: #fff;
+  padding: 0;
+  text-align: center;
+  li {
+    display: inline-block;
+    width: 14%;
+    border: 1px solid #aaa;
+    text-align: center;
+    padding: 0;
+    div {
+      display: block;
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding: 4px 2px;
+      font-weight: normal;
+      color: #fff;
+    }
+    &.selected {
+      font-weight: bold;
+    }
+  }
+}
+
+table.prioritisations {
+  .priority { width: 30px; }
+  .status { width: 124px; }
+
+  .id { width: 60px; color: #fff; }
+}
+
+.new-task {
+  padding-top: 12px;
+}
+
+h2 {
+  input {
+    width: 100%;
+    font-weight: bold;
+    font-size: 100%;
+  }
+}
+
+.field { width: 120px; }
+.update {
+  padding: 12px 0 12px 0;
+}
+
+table.scoring {
+  h4 { text-align: center; }
+  td td { vertical-align: middle; }
+  width: auto;
+  input { width: 50px; }
+}

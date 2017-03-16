@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html ng-app="app">
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+
+  </head>
+  <body ng-controller="NavController">
+    <h1><%= title %></h1>
+
+    <ul class="nav">
+      <li ng-repeat="navitem in nav" ng-click="filter(navitem)"
+          ng-class="{selected:navitem.route == category,overall:navitem.route == ''}">
+        <a href="/#"><div ng-class="navitem.route">{{navitem.name}}</div></a>
+      </li>
+    </ul>
+
+    <ng-view></ng-view>
+
+    <!-- Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-resource.min.js"></script>
+
+    <!-- Templates -->
+
+    <!-- <script type="text/ng-template" id="/prioritisations.html">
+      <table class="prioritisations">
+        <thead>
+          <tr>
+            <td class="priority">Priority</td>
+            <td class="theme">Theme</td>
+            <td class="id-header">Id</td>
+            <td class="status">Status</td>
+            <td class="description">Epic Title</td>
+            <td><td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="prioritisation in prioritisations | orderBy:'-priority' | filter:category">
+            <td class="center">{{prioritisation.priority}}</td>
+            <td>{{prioritisation.theme}}</td>
+            <td class="center id" ng-class="prioritisation['product-route']">{{prioritisation.id}}</td>
+            <td class="center">{{prioritisation.status}}</td>
+            <td><a href="#/{{prioritisation._id}}">{{prioritisation['epic-title']}}</a></td>
+            <td><button ng-show="!editing[$index]" ng-click="remove(prioritisation)">remove</button></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="new-task" ng-show="showNewTask">New task <input type="text" ng-model="newPrioritisation"><button ng-click="save()">Create</button></div>
+    </script>
+
+    <script type="text/ng-template" id="/prioritisationDetails.html">
+      <h2><input ng-model="prioritisation['epic-title']"></h2>
+      <h3>Priority Score {{ priorityTotal }}</h3>
+      <div class="right">Theme: <div ng-class="{empty:!prioritisation.theme}" class="inline {{prioritisation.theme}}">{{prioritisation.theme ? prioritisation.theme : 'None'}}</div></div>
+      <div class="right">Category: <div class="inline {{prioritisation['product-route']}}">{{prioritisation['product-group']}}</div></div>
+      <div class="update">
+        <button ng-click="update($index)">Update</button>
+        <a href="/#">Back</a>
+      </div>
+      <table>
+        <tr>
+         <td class="field">Id</td><td><input ng-model="prioritisation['id']"></td>
+        </tr>
+        <tr>
+          <td>Theme</td>
+          <td>
+            <select ng-model="prioritisation.theme">
+              <option>Personalisation</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+        <tr>
+          <td class="field">Product Owner</td><td><input ng-model="prioritisation['product-owner']"></td>
+        </tr>
+        <tr>
+          <td class="field">Business Sponsor</td><td><input ng-model="prioritisation['business-sponsor']"></td>
+        </tr>
+        <tr>
+          <td>Status</td>
+          <td>
+            <select ng-model="prioritisation.status">
+              <option>Proposal Backlog</option>
+              <option>Delivery Backlog</option>
+              <option>In Discovery</option>
+              <option>In Dev</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>Description</td><td><textarea ng-model="prioritisation['epic-description']"></textarea></td>
+        </tr>
+      </table>
+      <table class="scoring">
+        <tr>
+          <td>
+            <h4>Value Score {{ valueTotal }}</h4>
+            <table>
+              <tr>
+               <td>Customer Benefit</td><td><input ng-change="updateValue()" ng-model="prioritisation['value-customer-benefit']"></td>
+              </tr>
+              <tr>
+                <td>Incremental Sales</td><td><input ng-change="updateValue()" ng-model="prioritisation['value-incremental-sales']"></td>
+              </tr>
+              <tr>
+                <td>Cost Reduction</td><td><input ng-change="updateValue()" ng-model="prioritisation['value-cost-reduction']"></td>
+              </tr>
+              <tr>
+                <td>Legal</td><td><input ng-change="updateValue()" ng-model="prioritisation['value-legal']"></td>
+              </tr>
+              <tr>
+                <td>Stability</td><td><input ng-change="updateValue()" ng-model="prioritisation['value-stability']"></td>
+              </tr>
+            </table>
+          </td>
+          <td>
+            <h4>Doability Score {{ doabilityTotal }}</h4>
+            <table>
+              <tr>
+               <td>Size</td><td><input ng-change="updateDoability()" ng-model="prioritisation['doability-size']"></td>
+              </tr>
+              <tr>
+                <td>Complexity</td><td><input ng-change="updateDoability()" ng-model="prioritisation['doability-complexity']"></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+      <h3>Optional Fields</h3>
+      <table>
+        <tr ng-repeat="field in prioritisation.optional">
+          <td>{{field.field}}</td>
+          <td><input ng-model="field.value"></td>
+        </tr>
+      </table>
+    </script> -->
+
+    <script>
+      angular.module('app', ['ngRoute', 'ngResource'])
+
+        //---------------
+        // Services
+        //---------------
+
+        .factory('Prioritisations', ['$resource', function($resource){
+          return $resource('/prioritisations/:id', null, {
+            'update': { method:'PUT' }
+          });
+        }])
+
+        //---------------
+        // Controllers
+        //---------------
+
+        .controller('NavController', ['$scope', '$rootScope', function ($scope, $rootScope) {
+          $scope.nav = [
+            { "name": "Overall", "route": ""},
+            { "name": "Food", "route": "food", "optional": [ "notes", "other optional" ]},
+            { "name": "Womenswear & Home", "route": "womenswear-and-home"},
+            { "name": "Menswear & Kidswear", "route": "menswear-and-kidswear"},
+            { "name": "International", "route": "international"},
+            { "name": "Mobile", "route": "mobile"},
+            { "name": "Checkout & Payments", "route": "checkout-and-payments"}
+          ];
+          $scope.category = '';
+          $scope.filter = function(item) {
+            $scope.category = item.route
+            $rootScope.category = item
+            $rootScope.showNewTask = item.route != ''
+          };
+        }])
+
+        .controller('PrioritisationsController', ['$scope', '$rootScope', 'Prioritisations', '$filter', function ($scope, $rootScope, Prioritisations, $filter) {
+          $scope.editing = [];
+          $scope.prioritisations = Prioritisations.query();
+
+          $scope.save = function(){
+            if(!$scope.newPrioritisation || $scope.newPrioritisation.length < 1) return;
+            var saveObject = {
+              'epic-title': $scope.newPrioritisation,
+              'product-group': $rootScope.category.name,
+              'product-route': $rootScope.category.route,
+              'optional': $rootScope.category.optional,
+            }
+            var optional = $rootScope.category.optional
+            if (optional) {
+              saveObject.optional = []
+              angular.forEach(optional, function(field) {
+                saveObject.optional.push({field: field, value: ''})
+              })
+            }
+            prioritisation = new Prioritisations(saveObject);
+            prioritisation.$save(function(){
+              $scope.prioritisations.push(prioritisation);
+              $scope.newPrioritisation = ''; // clear textbox
+            });
+          }
+
+          $scope.update = function(index){
+            var prioritisation = $scope.prioritisations[index];
+            Prioritisations.update({id: prioritisation._id}, prioritisation);
+            $scope.editing[index] = false;
+          }
+
+          $scope.edit = function(index){
+            $scope.editing[index] = angular.copy($scope.prioritisations[index]);
+          }
+
+          $scope.remove = function(prioritisation) {
+            var prioritisations = []
+            angular.forEach($scope.prioritisations, function(item) {
+              if (item._id != prioritisation._id) { prioritisations.push(item)}
+            })
+            Prioritisations.remove({id: prioritisation._id}, function(){
+              $scope.prioritisations = prioritisations;
+            });
+          }
+
+          $scope.cancel = function(index){
+            $scope.prioritisations[index] = angular.copy($scope.editing[index]);
+            $scope.editing[index] = false;
+          }
+        }])
+
+        .controller('PrioritisationDetailCtrl', ['$scope', '$rootScope', '$routeParams', 'Prioritisations', function ($scope, $rootScope, $routeParams, Prioritisations) {
+          $scope.update = function() {
+            $scope.prioritisation.priority = $scope.priorityTotal
+            Prioritisations.update({id: $scope.prioritisation._id}, $scope.prioritisation);
+          }
+
+          $scope.updateValues = function(fields) {
+            var total = 0
+            angular.forEach(fields, function(field) {
+                total = total + parseInt($scope.prioritisation[field])
+            })
+            return total
+          }
+
+          $scope.updateValue = function() {
+            var fields = [
+              'value-customer-benefit',
+              'value-incremental-sales',
+              'value-cost-reduction',
+              'value-legal',
+              'value-stability']
+            $scope.valueTotal = $scope.updateValues(fields)
+            $scope.updatePriority()
+          }
+
+          $scope.updateDoability = function() {
+              var fields = ['doability-size','doability-complexity']
+              $scope.doabilityTotal = $scope.updateValues(fields)
+              $scope.updatePriority()
+          }
+
+          $scope.updatePriority = function() {
+            if ($scope.valueTotal && $scope.doabilityTotal) {
+              $scope.priorityTotal = Math.round((100 * $scope.valueTotal) / $scope.doabilityTotal)
+            }
+          }
+
+          $scope.valueTotal = 0
+          $scope.doabilityTotal = 0
+          $scope.priorityTotal = 0
+
+          $scope.prioritisation = Prioritisations.get({id: $routeParams.id }, function() {
+            $scope.updateDoability()
+            $scope.updateValue()
+          })
+
+        }])
+
+        //---------------
+        // Routes
+        //---------------
+
+        .config(['$routeProvider', function ($routeProvider) {
+          $routeProvider
+            .when('/', {
+              templateUrl: 'templates/prioritisations.html',
+              controller: 'PrioritisationsController',
+            })
+
+            .when('/:id', {
+              templateUrl: 'templates/prioritisationDetails.html',
+              controller: 'PrioritisationDetailCtrl'
+           });
+        }]);
+    </script>
+  </body>
+</html>

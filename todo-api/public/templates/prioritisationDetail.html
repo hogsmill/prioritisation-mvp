@@ -1,0 +1,84 @@
+<h2><input ng-model="prioritisation['epic-title']"></h2>
+<h3>Priority Score {{ priorityTotal }}</h3>
+<div class="right">Theme: <div ng-class="{empty:!prioritisation.theme}" class="inline {{prioritisation.theme}}">{{prioritisation.theme ? prioritisation.theme : 'None'}}</div></div>
+<div class="right">Category: <div class="inline {{prioritisation['product-route']}}">{{prioritisation['product-group']}}</div></div>
+<div class="update">
+  <button ng-click="update($index)">Update</button>
+  <a href="/#">Back</a>
+</div>
+<table>
+  <tr>
+   <td class="field">Id</td><td><input ng-model="prioritisation['id']"></td>
+  </tr>
+  <tr>
+    <td>Theme</td>
+    <td>
+      <select ng-model="prioritisation.theme">
+        <option>Personalisation</option>
+      </select>
+    </td>
+  </tr>
+  <tr>
+  <tr>
+    <td class="field">Product Owner</td><td><input ng-model="prioritisation['product-owner']"></td>
+  </tr>
+  <tr>
+    <td class="field">Business Sponsor</td><td><input ng-model="prioritisation['business-sponsor']"></td>
+  </tr>
+  <tr>
+    <td>Status</td>
+    <td>
+      <select ng-model="prioritisation.status">
+        <option>Proposal Backlog</option>
+        <option>Delivery Backlog</option>
+        <option>In Discovery</option>
+        <option>In Dev</option>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td>Description</td><td><textarea ng-model="prioritisation['epic-description']"></textarea></td>
+  </tr>
+</table>
+<table class="scoring">
+  <tr>
+    <td>
+      <h4>Value Score {{ valueTotal }}</h4>
+      <table>
+        <tr>
+         <td>Customer Benefit</td><td><input ng-change="updateValue()" ng-model="prioritisation['value-customer-benefit']"></td>
+        </tr>
+        <tr>
+          <td>Incremental Sales</td><td><input ng-change="updateValue()" ng-model="prioritisation['value-incremental-sales']"></td>
+        </tr>
+        <tr>
+          <td>Cost Reduction</td><td><input ng-change="updateValue()" ng-model="prioritisation['value-cost-reduction']"></td>
+        </tr>
+        <tr>
+          <td>Legal</td><td><input ng-change="updateValue()" ng-model="prioritisation['value-legal']"></td>
+        </tr>
+        <tr>
+          <td>Stability</td><td><input ng-change="updateValue()" ng-model="prioritisation['value-stability']"></td>
+        </tr>
+      </table>
+    </td>
+    <td>
+      <h4>Doability Score {{ doabilityTotal }}</h4>
+      <table>
+        <tr>
+         <td>Size</td><td><input ng-change="updateDoability()" ng-model="prioritisation['doability-size']"></td>
+        </tr>
+        <tr>
+          <td>Complexity</td><td><input ng-change="updateDoability()" ng-model="prioritisation['doability-complexity']"></td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h3>Optional Fields</h3>
+<table>
+  <tr ng-repeat="field in prioritisation.optional">
+    <td>{{field.field}}</td>
+    <td><input ng-model="field.value"></td>
+  </tr>
+</table>
