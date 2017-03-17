@@ -8,6 +8,13 @@
   <body ng-controller="NavController">
     <h1><%= title %></h1>
 
+    <div class="right">
+      View:
+        <a href="/#">Default</a>
+        <a href="/#/view/bu-and-channel">By BU and Channel</a>
+        <a href="/#/view/team-capacity">By Team Capacity</a>
+    </div>
+
     <ul class="nav">
       <li ng-repeat="navitem in nav" ng-click="filter(navitem)"
           ng-class="{selected:navitem.route == category,overall:navitem.route == ''}">
@@ -32,7 +39,11 @@
         .factory('Prioritisations', ['$resource', function($resource){
           return $resource('/prioritisations/:id', null, {
             'update': { method:'PUT' }
-          });
+          })
+        }])
+
+        .factory('BuAndChannel', ['$resource', function($resource){
+          return $resource('/prioritisations/view/bu-and-channel');
         }])
 
         //---------------
@@ -157,6 +168,22 @@
 
         }])
 
+        .controller('BuAndChannelController', ['$scope', '$rootScope', '$http', function ($scope, $rootScope, $http) {
+          $http.get('/prioritisations/view/bu-and-channel')
+            .success(function(data) {
+              $scope.prioritisations = {}
+              angular.forEach(data, function(item) {
+                var route = item['product-route']
+                if (!$scope.prioritisations[route]) { $scope.prioritisations[route] = [] }
+                $scope.prioritisations[route].push(item)
+              })
+              console.log($scope.prioritisations)
+            })
+            .error(function() {
+              console.log('Ooer')
+            })
+        }])
+
         //---------------
         // Routes
         //---------------
@@ -171,8 +198,19 @@
             .when('/:id', {
               templateUrl: 'templates/prioritisationDetails.html',
               controller: 'PrioritisationDetailCtrl'
-           });
+           })
+
+           .when('/view/bu-and-channel', {
+             templateUrl: 'templates/view/buAndChannel.html',
+             controller: 'BuAndChannelController',
+           })
+
+           .when('/view/team-capacity', {
+             templateUrl: 'templates/view/teamCapacity.html',
+             //controller: 'TeamCapacityController',
+           })
         }]);
     </script>
+
   </body>
 </html>

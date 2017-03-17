@@ -15,7 +15,7 @@
       <td>{{prioritisation.theme}}</td>
       <td class="center id" ng-class="prioritisation['product-route']">{{prioritisation.id}}</td>
       <td class="center">{{prioritisation.status}}</td>
-      <td><a href="#/{{prioritisation._id}}">{{prioritisation['epic-title']}}</a></td>
+      <td><a class="epic-title" href="#/{{prioritisation._id}}">{{prioritisation['epic-title']}}</a></td>
       <td><button ng-show="!editing[$index]" ng-click="remove(prioritisation)">remove</button></td>
     </tr>
   </tbody>

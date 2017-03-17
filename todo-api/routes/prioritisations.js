@@ -11,6 +11,14 @@ router.get('/', function(req, res, next) {
   });
 });
 
+router.get('/view/bu-and-channel', function(req, res, next) {
+  console.log('HERE 1')
+  Prioritisation.find(function (err, prioritisations) {
+    if (err) return next(err);
+    res.json(prioritisations);
+  });
+});
+
 router.get('/:id', function(req, res, next) {
   Prioritisation.findById(req.params.id, function (err, prioritisation) {
     if (err) return next(err);
