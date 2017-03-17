@@ -12,7 +12,19 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/view/bu-and-channel', function(req, res, next) {
-  console.log('HERE 1')
+  Prioritisation.find(function (err, data) {
+    if (err) return next(err);
+    prioritisations = {};
+    for (var i = 0; i < data.length; i++) {
+      var route = data[i]['product-route']
+      if (!prioritisations[route]) { prioritisations[route] = [] }
+      prioritisations[route].push(data[i]);
+    }
+    res.json(prioritisations);
+  });
+});
+
+router.get('/view/team-capacity', function(req, res, next) {
   Prioritisation.find(function (err, prioritisations) {
     if (err) return next(err);
     res.json(prioritisations);

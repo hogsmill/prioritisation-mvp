@@ -5,14 +5,18 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
 
   </head>
-  <body ng-controller="NavController">
-    <h1><%= title %></h1>
+  <body ng-controller="NavController" ng-cloak>
+    <h1><%= title %> - {{period}}</h1>
 
-    <div class="right">
-      View:
-        <a href="/#">Default</a>
-        <a href="/#/view/bu-and-channel">By BU and Channel</a>
+    <div class="data-view">
+        <a href="/#">Default</a> |
+        <a href="/#/view/bu-and-channel">By BU and Channel</a> |
         <a href="/#/view/team-capacity">By Team Capacity</a>
+    </div>
+
+    <div class="period">
+      <select ng-options="period as period.period for period in periods"
+        ng-model="selectedItem" ng-change="setPeriod()"></select>
     </div>
 
     <ul class="nav">
@@ -36,6 +40,14 @@
         // Services
         //---------------
 
+        .factory('Categories', ['$resource', function($resource) {
+          return $resource('/categories');
+        }])
+
+        .factory('Periods', ['$resource', function($resource) {
+          return $resource('/periods');
+        }])
+
         .factory('Prioritisations', ['$resource', function($resource){
           return $resource('/prioritisations/:id', null, {
             'update': { method:'PUT' }
@@ -46,26 +58,37 @@
           return $resource('/prioritisations/view/bu-and-channel');
         }])
 
+        .factory('TeamCapacity', ['$resource', function($resource){
+          return $resource('/prioritisations/view/team-capacity');
+        }])
+
         //---------------
         // Controllers
         //---------------
 
-        .controller('NavController', ['$scope', '$rootScope', function ($scope, $rootScope) {
-          $scope.nav = [
-            { "name": "Overall", "route": ""},
-            { "name": "Food", "route": "food", "optional": [ "notes", "other optional" ]},
-            { "name": "Womenswear & Home", "route": "womenswear-and-home"},
-            { "name": "Menswear & Kidswear", "route": "menswear-and-kidswear"},
-            { "name": "International", "route": "international"},
-            { "name": "Mobile", "route": "mobile"},
-            { "name": "Checkout & Payments", "route": "checkout-and-payments"}
-          ];
+        .controller('NavController', ['$scope', '$rootScope', 'Categories', 'Periods', '$timeout', function ($scope, $rootScope, Categories, Periods, $timeout) {
+
+          $scope.nav = Categories.query();
+
+          $scope.periods = Periods.query();
+
           $scope.category = '';
           $scope.filter = function(item) {
             $scope.category = item.route
             $rootScope.category = item
             $rootScope.showNewTask = item.route != ''
           };
+
+          $scope.setPeriod = function() {
+            $scope.period = $scope.selectedItem.period
+          }
+
+          // MASSIVE HACK ALERT!
+          $timeout(function() {
+            $scope.selectedItem = $scope.periods[0];
+            $scope.setPeriod();
+          }, 500)
+
         }])
 
         .controller('PrioritisationsController', ['$scope', '$rootScope', 'Prioritisations', '$filter', function ($scope, $rootScope, Prioritisations, $filter) {
@@ -79,6 +102,7 @@
               'product-group': $rootScope.category.name,
               'product-route': $rootScope.category.route,
               'optional': $rootScope.category.optional,
+              'period': $scope.period
             }
             var optional = $rootScope.category.optional
             if (optional) {
@@ -105,13 +129,15 @@
           }
 
           $scope.remove = function(prioritisation) {
-            var prioritisations = []
-            angular.forEach($scope.prioritisations, function(item) {
-              if (item._id != prioritisation._id) { prioritisations.push(item)}
-            })
-            Prioritisations.remove({id: prioritisation._id}, function(){
-              $scope.prioritisations = prioritisations;
-            });
+            if (confirm("Deleting '" + prioritisation['epic-title'] + "' - continue?'")) {
+              var prioritisations = []
+              angular.forEach($scope.prioritisations, function(item) {
+                if (item._id != prioritisation._id) { prioritisations.push(item)}
+              })
+              Prioritisations.remove({id: prioritisation._id}, function(){
+                $scope.prioritisations = prioritisations;
+              });
+            }
           }
 
           $scope.cancel = function(index){
@@ -122,7 +148,8 @@
 
         .controller('PrioritisationDetailCtrl', ['$scope', '$rootScope', '$routeParams', 'Prioritisations', function ($scope, $rootScope, $routeParams, Prioritisations) {
           $scope.update = function() {
-            $scope.prioritisation.priority = $scope.priorityTotal
+            $scope.prioritisation.priority = $scope.priorityTotal;
+            $scope.prioritisation.period = $scope.period;
             Prioritisations.update({id: $scope.prioritisation._id}, $scope.prioritisation);
           }
 
@@ -168,20 +195,12 @@
 
         }])
 
-        .controller('BuAndChannelController', ['$scope', '$rootScope', '$http', function ($scope, $rootScope, $http) {
-          $http.get('/prioritisations/view/bu-and-channel')
-            .success(function(data) {
-              $scope.prioritisations = {}
-              angular.forEach(data, function(item) {
-                var route = item['product-route']
-                if (!$scope.prioritisations[route]) { $scope.prioritisations[route] = [] }
-                $scope.prioritisations[route].push(item)
-              })
-              console.log($scope.prioritisations)
-            })
-            .error(function() {
-              console.log('Ooer')
-            })
+        .controller('BuAndChannelController', ['$scope', '$rootScope', '$http', 'BuAndChannel', function ($scope, $rootScope, $http, BuAndChannel) {
+          $scope.prioritisations = BuAndChannel.get();
+        }])
+
+        .controller('TeamCapacityController', ['$scope', '$rootScope', '$http', 'TeamCapacity', function ($scope, $rootScope, $http, TeamCapacity) {
+          $scope.prioritisations = TeamCapacity.get();
         }])
 
         //---------------
@@ -207,7 +226,7 @@
 
            .when('/view/team-capacity', {
              templateUrl: 'templates/view/teamCapacity.html',
-             //controller: 'TeamCapacityController',
+             controller: 'TeamCapacityController',
            })
         }]);
     </script>

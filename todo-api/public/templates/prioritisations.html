@@ -10,7 +10,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr ng-repeat="prioritisation in prioritisations | orderBy:'-priority' | filter:category">
+    <tr ng-repeat="prioritisation in prioritisations | orderBy:'-priority' | filter:period | filter:category">
       <td class="center">{{prioritisation.priority}}</td>
       <td>{{prioritisation.theme}}</td>
       <td class="center id" ng-class="prioritisation['product-route']">{{prioritisation.id}}</td>

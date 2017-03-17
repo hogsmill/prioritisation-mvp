@@ -1,39 +1,8 @@
 <ul class="nav bu-and-channel">
-    <li></li>
-    <li>
-      <div class="food" ng-repeat="item in prioritisations['food']|orderBy:'-priority'">
-        {{item.priority}}<br>
-        {{item['epic-title']}}
-      </div>
-    </li>
-    <li>
-      <div class="womenswear-and-home" ng-repeat="item in prioritisations['womenswear-and-home']|orderBy:'-priority'">
-        {{item.priority}}<br>
-        {{item['epic-title']}}
-      </div>
-    </li>
-    <li>
-      <div class="menswear-and-kidswear" ng-repeat="item in prioritisations['menswear-and-kidswear']|orderBy:'-priority'">
-        {{item.priority}}<br>
-        {{item['epic-title']}}
-      </div>
-    </li>
-    <li>
-      <div class="international" ng-repeat="item in prioritisations['international']|orderBy:'-priority'">
-        {{item.priority}}<br>
-        {{item['epic-title']}}
-      </div>
-    </li>
-    <li>
-      <div class="mobile" ng-repeat="item in prioritisations['mobile']|orderBy:'-priority'">
-        {{item.priority}}<br>
-        {{item['epic-title']}}
-      </div>
-    </li>
-    <li>
-      <div class="checkout-and-payments" ng-repeat="item in prioritisations['checkout-and-payments'] |orderBy:'-priority'">
-        {{item.priority}}<br>
-        {{item['epic-title']}}
-      </div>
-    </li>
-</table>
+  <li ng-repeat="bu in nav">
+    <div class="{{bu['route']}}" ng-repeat="item in prioritisations[bu['route']] | filter:period | orderBy:'-priority'">
+      <div>{{item.priority}}</div>
+      <div>{{item['epic-title']}}</div>
+    </div>
+  </li>
+</ul>

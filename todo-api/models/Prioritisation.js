@@ -1,7 +1,8 @@
 var mongoose = require('mongoose');
 
 var PrioritisationSchema = new mongoose.Schema({
-  'id':String,
+  'name':String,
+  'route': String,
   'theme': String,
   'epic-title': String,
   'epic-description': String,
@@ -18,6 +19,7 @@ var PrioritisationSchema = new mongoose.Schema({
   'doability-size': { type: Number, default: 0 },
   'doability-complexity': { type: Number, default: 0 },
   'priority': { type: Number, default: 0 },
+  'team': String,
   'optional': Array
 });
 
