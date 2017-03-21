@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 var PrioritisationSchema = new mongoose.Schema({
-  'name':String,
+  'name': String,
   'period': String,
   'route': String,
   'theme': String,

@@ -147,10 +147,11 @@ div.bu-and-channel {
       @include ellipsis;
       text-align: center;
       padding: 3px;
-      height: 40px;
+      height: 44px;
       margin-bottom: 2px;
+      a { color: #fff; }
       div {
-        height: 12px;
+        height: 14px;
       }
     }
   }
@@ -161,10 +162,12 @@ div.bu-and-channel {
 .team-capacity {
   .team { width: 130px; }
   .team-capacity-item {
+    @include ellipsis;
     padding: 4px;
     margin: 2px;
     text-align: center;
     display: inline-block;
     width: 200px;
+    a { color: #fff; }
   }
 }

@@ -4,7 +4,7 @@
 <div class="right">Category: <div class="inline {{prioritisation['product-route']}}">{{prioritisation['product-group']}}</div></div>
 <div class="update">
   <button ng-click="update($index)">Update</button>
-  <a href="/#">Back</a>
+  <a href="" ng-click="back()">Back</a>
 </div>
 <table>
   <tr>
@@ -101,6 +101,7 @@
     </td>
   </tr>
 </table>
+
 <h3 ng-show="prioritisation.optional.length">Optional Fields</h3>
 <table>
   <tr ng-repeat="field in prioritisation.optional">

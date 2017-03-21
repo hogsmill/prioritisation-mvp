@@ -102,7 +102,6 @@
               'epic-title': $scope.newPrioritisation,
               'product-group': $rootScope.category.name,
               'product-route': $rootScope.category.route,
-              'optional': $rootScope.category.optional,
               'period': $scope.period
             }
             var optional = $rootScope.category.optional
@@ -132,13 +131,17 @@
           }
         }])
 
-        .controller('PrioritisationDetailCtrl', ['$scope', '$rootScope', '$routeParams', 'Prioritisations', function ($scope, $rootScope, $routeParams, Prioritisations) {
+        .controller('PrioritisationDetailCtrl', ['$scope', '$rootScope', '$routeParams', 'Prioritisations', '$window', function ($scope, $rootScope, $routeParams, Prioritisations, $window) {
           $scope.update = function() {
             $scope.prioritisation.priority = $scope.priorityTotal;
             $scope.prioritisation.period = $scope.period;
             $scope.prioritisation.team = $scope.selectedTeam;
 
             Prioritisations.update({id: $scope.prioritisation._id}, $scope.prioritisation);
+          }
+
+          $scope.back = function() {
+              $window.history.back() ;
           }
 
           $scope.updateValues = function(fields) {

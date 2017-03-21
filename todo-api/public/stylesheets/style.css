@@ -155,19 +155,26 @@ div.bu-and-channel div.category {
     text-overflow: ellipsis;
     text-align: center;
     padding: 3px;
-    height: 40px;
+    height: 44px;
     margin-bottom: 2px; }
+    div.bu-and-channel div.category div a {
+      color: #fff; }
     div.bu-and-channel div.category div div {
-      height: 12px; }
+      height: 14px; }
 
 /* Team Capacity */
 .team-capacity .team {
   width: 130px; }
 .team-capacity .team-capacity-item {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   padding: 4px;
   margin: 2px;
   text-align: center;
   display: inline-block;
   width: 200px; }
+  .team-capacity .team-capacity-item a {
+    color: #fff; }
 
 /*# sourceMappingURL=style.css.map */

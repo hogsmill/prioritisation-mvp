@@ -2,8 +2,8 @@
 <div class="nav bu-and-channel">
   <div class="category" ng-repeat="bu in nav">
     <div class="{{bu['route']}}" ng-repeat="item in prioritisations[bu['route']] | filter:period | orderBy:'-priority'">
+      <div><a href="#/{{item._id}}" title="{{item['epic-title']}}">{{item['epic-title']}}</a></div>
       <div>{{item.priority}}</div>
-      <div>{{item['epic-title']}}</div>
     </div>
   </div>
 </div>
