@@ -97,6 +97,9 @@ table {
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      /*white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;*/
       padding: 4px 2px;
       font-weight: normal;
       color: #fff; }
@@ -141,17 +144,20 @@ table.scoring {
     width: 50px; }
 
 /* BU and Channel */
-ul.bu-and-channel li {
+div.bu-and-channel div.category {
+  display: inline-block;
   width: 14%;
   vertical-align: top;
-  border: 0; }
-  ul.bu-and-channel li div {
-    width: 100%;
+  border: 1px solid #fff; }
+  div.bu-and-channel div.category div {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     text-align: center;
     padding: 3px;
     height: 40px;
     margin-bottom: 2px; }
-    ul.bu-and-channel li div div {
+    div.bu-and-channel div.category div div {
       height: 12px; }
 
 /* Team Capacity */

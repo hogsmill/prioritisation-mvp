@@ -11,7 +11,7 @@
     <tr ng-repeat="team in teams">
       <td>{{team.name}}</td>
       <td>
-        <div class="team-capacity-item {{prioritisation['product-route']}}"  ng-repeat="prioritisation in prioritisations[team['_id']] | orderBy:priority">
+        <div class="team-capacity-item {{prioritisation['product-route']}}"  ng-repeat="prioritisation in prioritisations[team['_id']] | orderBy:'-priority'">
           <div>{{prioritisation['epic-title']}}</div>
           <div>{{prioritisation.priority}}</div>
         </div>

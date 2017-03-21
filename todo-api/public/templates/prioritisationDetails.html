@@ -16,7 +16,7 @@
       <select ng-model="prioritisation.theme">
         <option>Mobile</option>
         <option>Personalisation</option>
-        <option>Performance & Optimistaion</option>
+        <option>Performance & Optimisation</option>
       </select>
     </td>
   </tr>
@@ -69,7 +69,7 @@
 <table class="scoring">
   <tr>
     <td>
-      <h4>Value Score {{ valueTotal }}</h4>
+      <h4>Value Score {{valueTotal}}</h4>
       <table>
         <tr>
          <td>Customer Benefit</td><td><input ng-change="updateValue()" ng-model="prioritisation['value-customer-benefit']"></td>
@@ -89,7 +89,7 @@
       </table>
     </td>
     <td>
-      <h4>Doability Score {{ doabilityTotal }}</h4>
+      <h4>Doability Score {{doabilityTotal}}</h4>
       <table>
         <tr>
          <td>Size</td><td><input ng-change="updateDoability()" ng-model="prioritisation['doability-size']"></td>
@@ -101,7 +101,7 @@
     </td>
   </tr>
 </table>
-<h3>Optional Fields</h3>
+<h3 ng-show="prioritisation.optional.length">Optional Fields</h3>
 <table>
   <tr ng-repeat="field in prioritisation.optional">
     <td>{{field.field}}</td>

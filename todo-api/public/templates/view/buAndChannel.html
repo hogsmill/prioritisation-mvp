@@ -1,8 +1,9 @@
-<ul class="nav bu-and-channel">
-  <li ng-repeat="bu in nav">
+
+<div class="nav bu-and-channel">
+  <div class="category" ng-repeat="bu in nav">
     <div class="{{bu['route']}}" ng-repeat="item in prioritisations[bu['route']] | filter:period | orderBy:'-priority'">
       <div>{{item.priority}}</div>
       <div>{{item['epic-title']}}</div>
     </div>
-  </li>
-</ul>
+  </div>
+</div>

@@ -7,6 +7,12 @@ $checkout-and-payments: navy;
 $mobile: #ff8080;
 $anchor: navy;
 
+@mixin ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   input, textarea {
@@ -77,9 +83,10 @@ table {
     div {
       display: block;
       width: 100%;
-      white-space: nowrap;
+      @include ellipsis;
+      /*white-space: nowrap;
       overflow: hidden;
-      text-overflow: ellipsis;
+      text-overflow: ellipsis;*/
       padding: 4px 2px;
       font-weight: normal;
       color: #fff;
@@ -130,13 +137,14 @@ table.scoring {
 
 /* BU and Channel */
 
-ul.bu-and-channel {
-  li {
+div.bu-and-channel {
+  div.category {
+    display: inline-block;;
     width: 14%;
     vertical-align: top;
-    border: 0;
+    border: 1px solid #fff;
     div {
-      width: 100%;
+      @include ellipsis;
       text-align: center;
       padding: 3px;
       height: 40px;
