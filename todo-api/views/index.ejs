@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html ng-app="app">
   <head>
-    <title><%= title %></title>
+    <title ng-cloak><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
 
   </head>
-  <body ng-controller="NavController" ng-cloak>
-    <h1><%= title %> - {{period}}</h1>
+  <body ng-controller="NavController">
+    <h1><%= title %> <span ng-show="period"> - {{period}}</span></h1>
 
     <div class="data-view">
         <a href="/#">Default</a> |
@@ -48,6 +48,10 @@
           return $resource('/periods');
         }])
 
+        .factory('Teams', ['$resource', function($resource) {
+          return $resource('/teams');
+        }])
+
         .factory('Prioritisations', ['$resource', function($resource){
           return $resource('/prioritisations/:id', null, {
             'update': { method:'PUT' }
@@ -66,11 +70,15 @@
         // Controllers
         //---------------
 
-        .controller('NavController', ['$scope', '$rootScope', 'Categories', 'Periods', '$timeout', function ($scope, $rootScope, Categories, Periods, $timeout) {
+        .controller('NavController', ['$scope', '$rootScope', 'Categories', 'Periods', 'Teams', function ($scope, $rootScope, Categories, Periods, Teams) {
 
           $scope.nav = Categories.query();
-
-          $scope.periods = Periods.query();
+          $scope.periods = Periods.query()
+          $scope.periods.$promise.then(function() {
+            $scope.selectedItem = $scope.periods[0];
+            $scope.setPeriod();
+          });
+          $scope.teams = Teams.query();
 
           $scope.category = '';
           $scope.filter = function(item) {
@@ -82,13 +90,6 @@
           $scope.setPeriod = function() {
             $scope.period = $scope.selectedItem.period
           }
-
-          // MASSIVE HACK ALERT!
-          $timeout(function() {
-            $scope.selectedItem = $scope.periods[0];
-            $scope.setPeriod();
-          }, 500)
-
         }])
 
         .controller('PrioritisationsController', ['$scope', '$rootScope', 'Prioritisations', '$filter', function ($scope, $rootScope, Prioritisations, $filter) {
@@ -118,16 +119,6 @@
             });
           }
 
-          $scope.update = function(index){
-            var prioritisation = $scope.prioritisations[index];
-            Prioritisations.update({id: prioritisation._id}, prioritisation);
-            $scope.editing[index] = false;
-          }
-
-          $scope.edit = function(index){
-            $scope.editing[index] = angular.copy($scope.prioritisations[index]);
-          }
-
           $scope.remove = function(prioritisation) {
             if (confirm("Deleting '" + prioritisation['epic-title'] + "' - continue?'")) {
               var prioritisations = []
@@ -139,17 +130,14 @@
               });
             }
           }
-
-          $scope.cancel = function(index){
-            $scope.prioritisations[index] = angular.copy($scope.editing[index]);
-            $scope.editing[index] = false;
-          }
         }])
 
         .controller('PrioritisationDetailCtrl', ['$scope', '$rootScope', '$routeParams', 'Prioritisations', function ($scope, $rootScope, $routeParams, Prioritisations) {
           $scope.update = function() {
             $scope.prioritisation.priority = $scope.priorityTotal;
             $scope.prioritisation.period = $scope.period;
+            $scope.prioritisation.team = $scope.selectedTeam;
+
             Prioritisations.update({id: $scope.prioritisation._id}, $scope.prioritisation);
           }
 
@@ -188,9 +176,10 @@
           $scope.doabilityTotal = 0
           $scope.priorityTotal = 0
 
-          $scope.prioritisation = Prioritisations.get({id: $routeParams.id }, function() {
+          $scope.prioritisation = Prioritisations.get({id: $routeParams.id }, function(data) {
             $scope.updateDoability()
             $scope.updateValue()
+            $scope.selectedTeam = data.team
           })
 
         }])

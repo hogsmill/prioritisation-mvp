@@ -25,8 +25,16 @@ router.get('/view/bu-and-channel', function(req, res, next) {
 });
 
 router.get('/view/team-capacity', function(req, res, next) {
-  Prioritisation.find(function (err, prioritisations) {
+  Prioritisation.find(function (err, data) {
     if (err) return next(err);
+    prioritisations = {}
+    for (var i = 0; i < data.length; i++) {
+      var team = data[i]['team'].toString().replace(/'/g, '')
+      if (team.match(/[0-9a-z]+/)) {
+        if (!prioritisations[team]) { prioritisations[team] = [] }
+        prioritisations[team].push(data[i]);
+      }
+    }
     res.json(prioritisations);
   });
 });

@@ -21,6 +21,19 @@
     </td>
   </tr>
   <tr>
+    <td class="field">Goal</td>
+    <td>
+      <table>
+        <tr>
+          <td><input type="checkbox" ng-model="prioritisation['goal-revenue']"></td><td>Revenue</td>
+          <td><input type="checkbox" ng-model="prioritisation['goal-cost-saving']"></td><td>Cost Saving</td>
+          <td><input type="checkbox" ng-model="prioritisation['goal-nps']"></td><td>NPS</td>
+          <td><input type="checkbox" ng-model="prioritisation['goal-csat']"></td><td>CSAT</td>
+          <td><input type="checkbox" ng-model="prioritisation['goal-site-speed']"></td><td>Site Speed</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
   <tr>
     <td class="field">Product Owner</td><td><input ng-model="prioritisation['product-owner']"></td>
   </tr>
@@ -28,7 +41,14 @@
     <td class="field">Business Sponsor</td><td><input ng-model="prioritisation['business-sponsor']"></td>
   </tr>
   <tr>
-    <td class="field">Team</td><td><input ng-model="prioritisation['team']"></td>
+    <td class="field">Team</td>
+    <td>
+      <select ng-model="selectedTeam">
+        <option ng-repeat="team in teams" value="{{team['_id']}}" ng-selected="team['_id'] == selectedTeam['_id']">{{team.name}}</option>
+      </select>
+      <!-- <select ng-options="team as team.name for team in teams"
+        ng-model="selectedTeam" ng-selected="team.id == selectedTeam['_id']"></select> -->
+    </td>
   </tr>
   <tr>
     <td>Status</td>
@@ -37,7 +57,8 @@
         <option>Proposal Backlog</option>
         <option>Delivery Backlog</option>
         <option>In Discovery</option>
-        <option>In Dev</option>
+        <option>Carried over from previous quarter (in dev)</option>
+        <option>New this quarter</option>
       </select>
     </td>
   </tr>

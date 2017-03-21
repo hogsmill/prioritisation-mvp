@@ -10,7 +10,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr ng-repeat="prioritisation in prioritisations | orderBy:'-priority' | filter:period | filter:category">
+    <tr ng-repeat="prioritisation in filtered = (prioritisations | orderBy:'-priority' | filter:period | filter:category)">
       <td class="center">{{prioritisation.priority}}</td>
       <td>{{prioritisation.theme}}</td>
       <td class="center id" ng-class="prioritisation['product-route']">{{prioritisation.id}}</td>
@@ -21,3 +21,6 @@
   </tbody>
 </table>
 <div class="new-task" ng-show="showNewTask">New task <input type="text" ng-model="newPrioritisation"><button ng-click="save()">Create</button></div>
+<div class="no-of-items">
+  <ng-pluralize count="filtered.length" when="{'0': 'No items', '1': '1 item', 'other': '{} items'}"</ng-pluralize>
+</div>

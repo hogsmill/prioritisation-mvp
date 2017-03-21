@@ -1,1 +1,21 @@
 <h3>Team Capacity - In Progress</h3>
+
+<table class="team-capacity">
+  <thead>
+    <tr>
+      <td class="team">Team</td>
+      <td></td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="team in teams">
+      <td>{{team.name}}</td>
+      <td>
+        <div class="team-capacity-item {{prioritisation['product-route']}}"  ng-repeat="prioritisation in prioritisations[team['_id']] | orderBy:priority">
+          <div>{{prioritisation['epic-title']}}</div>
+          <div>{{prioritisation.priority}}</div>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>

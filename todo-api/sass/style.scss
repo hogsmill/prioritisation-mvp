@@ -23,6 +23,8 @@ a {
   &:hover { text-decoration: underline; }
 }
 
+span { display: inline; }
+
 h1 { text-align: center; }
 
 table {
@@ -99,6 +101,13 @@ table.prioritisations {
   padding-top: 12px;
 }
 
+.no-of-items {
+  text-align: right;
+  padding: 6px 0 6px 6px;
+  font-style: italic;
+  font-size: 75%;
+}
+
 h2 {
   input {
     width: 100%;
@@ -136,5 +145,18 @@ ul.bu-and-channel {
         height: 12px;
       }
     }
+  }
+}
+
+/* Team Capacity */
+
+.team-capacity {
+  .team { width: 130px; }
+  .team-capacity-item {
+    padding: 4px;
+    margin: 2px;
+    text-align: center;
+    display: inline-block;
+    width: 200px;
   }
 }
